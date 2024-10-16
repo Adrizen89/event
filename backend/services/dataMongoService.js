@@ -1,8 +1,8 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 const path = require('path');
-const EventSchema = require('./models/eventModel');
-const connectDB = require('./config/db_mongodb');
+const EventSchema = require('../models/eventModel');
+const connectDB = require('../config/db_mongodb');
 
 //Adapter la data des json 
 function adaptData(data) {

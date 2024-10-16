@@ -12,12 +12,12 @@ const insertEvent = async (name, date_creation, date_start, date_finish, max_att
 
 const insertInscription = async (firstName, lastName, date_inscription, linkedEventID) => {
     const connection = await connectMySQL();
-    
-    // Remplacer les valeurs `undefined` par des valeurs par défaut ou `null`
+
+    // Remplacer les valeurs undefined par des valeurs par défaut ou null
     firstName = firstName || 'Prénom inconnu';
     lastName = lastName || 'Nom inconnu';
-    date_inscription = date_inscription || new Date(); // Utilise la date actuelle si `undefined`
-    linkedEventID = linkedEventID || null; // S'assurer que l'ID est défini, sinon `null`
+    date_inscription = date_inscription || new Date(); // Utilise la date actuelle si undefined
+    linkedEventID = linkedEventID || null; // S'assurer que l'ID est défini, sinon null
 
     await connection.execute('CALL insertInscription(?, ?, ?, ?)', 
         [firstName, lastName, date_inscription, linkedEventID]);
@@ -25,4 +25,20 @@ const insertInscription = async (firstName, lastName, date_inscription, linkedEv
     await connection.end();
 };
 
-module.exports = { insertEvent, insertInscription };
+const updateEventDates = async (eventID, newDateStart, newDateFinish) => {
+    const connection = await connectMySQL();
+    
+    const [rows] = await connection.execute('CALL updateEventDates(?, ?, ?)', 
+        [eventID, newDateStart, newDateFinish]);
+
+    const updateStatus = rows && rows[0] ? rows[0][0].updateStatus : null;
+    await connection.end();
+    
+    if (updateStatus === null) {
+        throw new Error("La mise à jour a échoué ou aucune réponse n'a été retournée.");
+    }
+
+    return updateStatus;
+};
+
+module.exports = { insertEvent, insertInscription, updateEventDates };

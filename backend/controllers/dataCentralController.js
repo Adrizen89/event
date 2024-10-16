@@ -1,5 +1,5 @@
 const Event = require("../models/eventModel");
-const { insertEvent, insertInscription } = require('../services/sqlService');
+const { insertEvent, insertInscription, updateEventDates } = require('../services/dataCentralService');
 
 const transferData = async () => {
     try {
@@ -31,4 +31,19 @@ const transferData = async () => {
     }
 };
 
-module.exports = transferData;
+const updateDates = async (eventID, newDateStart, newDateFinish) => {
+    try {
+        // Appel direct à la procédure pour mettre à jour les dates dans MySQL
+        const updateStatus = await updateEventDates(eventID, newDateStart, newDateFinish);
+
+        if (updateStatus) {
+            console.log(`Dates de l'événement avec ID ${eventID} mises à jour avec succès !`);
+        } else {
+            console.warn(`Échec de la mise à jour des dates pour l'événement avec ID ${eventID}.`);
+        }
+    } catch (error) {
+        console.error('Erreur pendant la mise à jour des dates :', error);
+    }
+};
+
+module.exports = { transferData, updateDates };
