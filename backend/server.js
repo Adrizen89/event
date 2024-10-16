@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDB = require('./config/db');
+const connectDB = require('./config/db_mongodb');
 const userRoutes = require('./routes/userRoutes');
 const eventRoute = require('./routes/eventRoutes');
 const dotenv = require('dotenv');

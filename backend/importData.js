@@ -2,14 +2,17 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const path = require('path');
 const EventSchema = require('./models/eventModel');
-const connectDB = require('./config/db');
+const connectDB = require('./config/db_mongodb');
 
 //Adapter la data des json 
 function adaptData(data) {
 
     const name = data.event || data.e_name || (data.results && data.results[0].event.event_name) || "Unknown Event";
-    const date = new Date(data.start || data.e_start || (data.results && data.results[0].event.event_begin));
+    const date_start = new Date(data.start || data.e_start || (data.results && data.results[0].event.event_begin));
+    const date_finish = new Date(data.end || data.e_finish || (data.results && data.results[0].event.event_finish));
     const location = data.e_location || data.where || (data.results && data.results[0].event.event_where) || "Unknown Location";
+    const max_attendees = data.max || data.e_attendees_max || 99;
+
 
     let attendees = [];
 
@@ -43,7 +46,7 @@ function adaptData(data) {
     else {
         console.log("No attendees found in expected structures");
     }
-    return { name, date, location, attendees };
+    return { name, date_start, date_finish, location,max_attendees, attendees };
 }
 
 //Import d'un fichier json 
