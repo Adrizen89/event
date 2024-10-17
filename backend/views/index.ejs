@@ -36,6 +36,7 @@
                     <p class="text-gray-600"><strong>Date de début :</strong> <%= new Date(event.date_debut).toLocaleString() %></p>
                     <p class="text-gray-600"><strong>Date de fin :</strong> <%= new Date(event.date_fin).toLocaleString() %></p>
                     <p class="text-gray-600"><strong>Nombre maximum de participants :</strong> <%= event.personnes_max %></p>
+                    <a href="/api/events/edit/<%= event.id %>" class="text-blue-500 hover:underline">Modifier cet événement</a>
                 </div>
             <% }) %>
         </div>
