@@ -1,5 +1,5 @@
 const Event = require("../models/eventModel");
-const { insertEvent, insertInscription } = require('../services/sqlService');
+const { insertEvent, insertInscription } = require('../services/dataCentralService');
 
 const transferData = async () => {
     try {
@@ -31,4 +31,4 @@ const transferData = async () => {
     }
 };
 
-module.exports = transferData;
+module.exports = {transferData};

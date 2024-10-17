@@ -1,8 +1,8 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 const path = require('path');
-const EventSchema = require('./models/eventModel');
-const connectDB = require('./config/db_mongodb');
+const EventSchema = require('../models/eventModel');
+const connectDB = require('../config/db_mongodb');
 
 //Adapter la data des json 
 function adaptData(data) {
@@ -52,7 +52,7 @@ function adaptData(data) {
 async function importData(){
     try {
         await connectDB();
-        const folderPath = path.join(__dirname, '../data');
+        const folderPath = path.join(__dirname, '../../data');
         const files = fs.readdirSync(folderPath);
 
         for (const file of files) {
