@@ -13,7 +13,6 @@ function adaptData(data) {
     const location = data.e_location || data.where || (data.results && data.results[0].event.event_where) || "Unknown Location";
     const max_attendees = data.max || data.e_attendees_max || 99;
 
-
     let attendees = [];
 
     // Cas 1 ([ "John", "Doe", "2023-03-12" ])
