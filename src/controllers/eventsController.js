@@ -88,5 +88,28 @@ const deleteParticipant = async (req, res) => {
         res.status(500).json({ message: "Erreur lors de la suppression de l'inscription", error: err.message });
     }
 }
+const createEvent = async (req, res) => {
+    const { name, date_debut, date_fin, personnes_max, lieu } = req.body;
 
-module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent, deleteParticipant };
+    try {
+        const mysqlConnection = await connectMySQL();
+        const date_creation = new Date();
+        const [result] = await mysqlConnection.execute('CALL insertEvent(?, ?, ?, ?, ?, ?)', [name, date_creation, date_debut, date_fin, personnes_max, lieu]);
+        await mysqlConnection.end();
+
+        const newEventID = result?.[0]?.[0]?.newEventID || null;
+
+        if (newEventID) {
+            res.redirect('/api/events?success=true'); 
+        } else {
+            res.status(500).json({ message: 'Erreur lors de la création : ID non récupéré', result });
+        }
+    } catch (err) {
+        console.error('Erreur lors de la création de l\'événement :', err);
+        res.status(500).json({ message: 'Erreur lors de la création de l\'événement', error: err.message });
+    }
+};
+
+
+
+module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent, deleteParticipant, createEvent };
