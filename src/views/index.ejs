@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventJS - MongoDB & MySQL</title>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    <header class="bg-blue-600 text-white p-4">
+        <h1 class="text-4xl font-bold text-center">EventJS - MongoDB & MySQL</h1>
+    </header>
+    <main class="container mx-auto p-6">
+        <!-- Section MongoDB -->
+        <h2 class="text-3xl font-bold mb-6">Événements (MongoDB)</h2>
+        <div class="space-y-6">
+            <% mongoEvents.forEach(event => { %> <!-- Remplace "mongoData" par "mongoEvents" -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4"><%= event.name %></h3>
+                    <p class="text-gray-600"><strong>Lieu :</strong> <%= event.location %></p>
+                    <p class="text-gray-600"><strong>Date de début :</strong> <%= new Date(event.date_start).toLocaleString() %></p>
+                    <p class="text-gray-600"><strong>Date de fin :</strong> <%= new Date(event.date_finish).toLocaleString() %></p>
+                    <p class="text-gray-600"><strong>Nombre maximum de participants :</strong> <%= event.max_attendees %></p>
+                </div>
+            <% }) %>
+        </div>
+
+        <!-- Section MySQL -->
+        <h2 class="text-3xl font-bold mt-12 mb-6">Événements (MySQL)</h2>
+        <div class="space-y-6">
+            <% mysqlEvents.forEach(event => { %>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4"><%= event.name %></h3>
+                    <p class="text-gray-600"><strong>Lieu :</strong> <%= event.lieu %></p>
+                    <p class="text-gray-600"><strong>Date de création :</strong> <%= new Date(event.date_creation).toLocaleString() %></p>
+                    <p class="text-gray-600"><strong>Date de début :</strong> <%= new Date(event.date_debut).toLocaleString() %></p>
+                    <p class="text-gray-600"><strong>Date de fin :</strong> <%= new Date(event.date_fin).toLocaleString() %></p>
+                    <p class="text-gray-600"><strong>Nombre maximum de participants :</strong> <%= event.personnes_max %></p>
+                    <a href="/api/events/edit/<%= event.id %>" class="text-blue-500 hover:underline">Modifier cet événement</a>
+                    <button class="text-red-500 hover:underline" onclick="deleteEvent('<%= event.id %>')">Supprimer</button>
+
+                </div>
+            <% }) %>
+        </div>
+    </main>
+
+    <script>
+        function deleteEvent(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+                fetch(`/api/events/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload(); // Recharge la page après une suppression réussie
+                    } else {
+                        alert('Erreur lors de la suppression de l\'événement.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert('Erreur lors de la suppression de l\'événement.');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

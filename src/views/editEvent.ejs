@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier les Dates de l'Événement</title>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    <header class="bg-blue-600 text-white p-4">
+        <h1 class="text-4xl font-bold text-center">Modifier les Dates de l'Événement</h1>
+    </header>
+    <main class="container mx-auto p-6">
+        <form action="/api/events/update" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <input type="hidden" name="id" value="<%= event.id %>">
+
+            <!-- Champ pour la date de début -->
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="date_debut">Date de début</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                       type="datetime-local" name="date_debut" id="date_debut" 
+                       value="<%= new Date(event.date_debut).toISOString().slice(0, 16) %>" required>
+            </div>
+
+            <!-- Champ pour la date de fin -->
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="date_fin">Date de fin</label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                       type="datetime-local" name="date_fin" id="date_fin" 
+                       value="<%= new Date(event.date_fin).toISOString().slice(0, 16) %>" required>
+            </div>
+
+            <!-- Bouton de soumission -->
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                        type="submit">
+                    Mettre à jour les dates
+                </button>
+            </div>
+        </form>
+        <% if (event.participants && event.participants.length > 0) { %>
+            <ul class="list-disc list-inside">
+                <% event.participants.forEach(participant => { %>
+                    <li>
+                        <%= participant.firstName %> <%= participant.lastName %>
+                        <button onclick="deleteParticipant('<%= participant.firstName %>', '<%= participant.lastName %>', '<%= event.id %>')" class="text-red-500 hover:underline">Supprimer</button>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>Aucun participant inscrit pour cet événement.</p>
+        <% } %>
+    </main>
+
+    <script>
+        function deleteParticipant(firstName, lastName, eventId) {
+            if (confirm(`Êtes-vous sûr de vouloir supprimer l'inscription de ${firstName} ${lastName} ?`)) {
+                fetch(`/api/events/${eventId}/participants`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        firstName: firstName,
+                        lastName: lastName
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload(); // Recharge la page après une suppression réussie
+                    } else {
+                        alert("Erreur lors de la suppression de l'inscription.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert("Erreur lors de la suppression de l'inscription.");
+                });
+            }
+        }
+    </script>
+</body>
+</html>
