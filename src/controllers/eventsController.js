@@ -73,6 +73,34 @@ const deleteEvent = async (req, res) => {
     }
 }
 
+
+
+const addParticipant = async (req, res) => {
+    const { eventId, firstName, lastName, dateInscription } = req.body;
+    console.log('ID de l\'événement transmis :', eventId);
+
+    try {
+        const mysqlConnection = await connectMySQL();
+
+        // Appel de la procédure
+        await mysqlConnection.execute('CALL insertInscription(?, ?, ?, ?)', [
+            firstName, 
+            lastName, 
+            eventId, 
+            dateInscription
+        ]);
+
+        await mysqlConnection.end();
+        res.status(200).json({ message: 'Participant ajouté avec succès.' });
+    } catch (err) {
+        console.error('Erreur lors de l\'ajout du participant :', err);
+        res.status(400).json({ message: err.sqlMessage || 'Erreur lors de l\'ajout du participant.' });
+    }
+};
+
+
+
+
 const deleteParticipant = async (req, res) => {
     const { firstName, lastName } = req.body;
     const eventId = req.params.id;
@@ -89,4 +117,4 @@ const deleteParticipant = async (req, res) => {
     }
 }
 
-module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent, deleteParticipant };
+module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent, addParticipant ,deleteParticipant };
