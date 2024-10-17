@@ -38,6 +38,46 @@
                 </button>
             </div>
         </form>
+        <% if (event.participants && event.participants.length > 0) { %>
+            <ul class="list-disc list-inside">
+                <% event.participants.forEach(participant => { %>
+                    <li>
+                        <%= participant.firstName %> <%= participant.lastName %>
+                        <button onclick="deleteParticipant('<%= participant.firstName %>', '<%= participant.lastName %>', '<%= event.id %>')" class="text-red-500 hover:underline">Supprimer</button>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>Aucun participant inscrit pour cet événement.</p>
+        <% } %>
     </main>
+
+    <script>
+        function deleteParticipant(firstName, lastName, eventId) {
+            if (confirm(`Êtes-vous sûr de vouloir supprimer l'inscription de ${firstName} ${lastName} ?`)) {
+                fetch(`/api/events/${eventId}/participants`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        firstName: firstName,
+                        lastName: lastName
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload(); // Recharge la page après une suppression réussie
+                    } else {
+                        alert("Erreur lors de la suppression de l'inscription.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert("Erreur lors de la suppression de l'inscription.");
+                });
+            }
+        }
+    </script>
 </body>
 </html>

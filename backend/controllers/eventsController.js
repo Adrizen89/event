@@ -23,12 +23,17 @@ const renderEditEvent = async (req, res) => {
 
     try {
         const mysqlConnection = await connectMySQL();
-        const [rows] = await mysqlConnection.execute('SELECT * FROM events WHERE id = ?', [eventId]);
+        const [eventRows] = await mysqlConnection.execute('SELECT * FROM events WHERE id = ?', [eventId]);
+        const [participantRows] = await mysqlConnection.execute('SELECT name AS firstName, lastName FROM inscriptions WHERE event_id = ?', [eventId]);
         await mysqlConnection.end();
 
-        if (rows.length > 0) {
-            const event = rows[0];
-            res.render('editEvent', { event }); // Affiche la vue d'édition avec les données de l'événement
+        if (eventRows.length > 0) {
+            const event = eventRows[0];
+            event.participants = participantRows.map(participant => ({
+                firstName: participant.firstName,
+                lastName: participant.lastName
+            }));
+            res.render('editEvent', { event }); 
         } else {
             res.status(404).send('Événement non trouvé');
         }
@@ -68,4 +73,20 @@ const deleteEvent = async (req, res) => {
     }
 }
 
-module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent };
+const deleteParticipant = async (req, res) => {
+    const { firstName, lastName } = req.body;
+    const eventId = req.params.id;
+    console.log(req.body);
+    try {
+        const mysqlConnection = await connectMySQL();
+        await mysqlConnection.execute('CALL unregisterParticipant(?, ?, ?)', [firstName, lastName, eventId]);
+        await mysqlConnection.end();
+
+        res.status(204).send(); // Retourne un statut 204 si la suppression est réussie
+    } catch (err) {
+        console.error("Erreur lors de la suppression de l'inscription :", err);
+        res.status(500).json({ message: "Erreur lors de la suppression de l'inscription", error: err.message });
+    }
+}
+
+module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent, deleteParticipant };
