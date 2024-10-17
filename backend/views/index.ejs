@@ -37,9 +37,32 @@
                     <p class="text-gray-600"><strong>Date de fin :</strong> <%= new Date(event.date_fin).toLocaleString() %></p>
                     <p class="text-gray-600"><strong>Nombre maximum de participants :</strong> <%= event.personnes_max %></p>
                     <a href="/api/events/edit/<%= event.id %>" class="text-blue-500 hover:underline">Modifier cet événement</a>
+                    <button class="text-red-500 hover:underline" onclick="deleteEvent('<%= event.id %>')">Supprimer</button>
+
                 </div>
             <% }) %>
         </div>
     </main>
+
+    <script>
+        function deleteEvent(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+                fetch(`/api/events/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload(); // Recharge la page après une suppression réussie
+                    } else {
+                        alert('Erreur lors de la suppression de l\'événement.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert('Erreur lors de la suppression de l\'événement.');
+                });
+            }
+        }
+    </script>
 </body>
 </html>

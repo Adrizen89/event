@@ -39,17 +39,33 @@ const renderEditEvent = async (req, res) => {
 
 //modif de l'event sur mysql
 const updateEvent = async (req, res) => {
-    const { id, name, date_debut, date_fin, lieu, personnes_max } = req.body;
+    const { id, date_debut, date_fin } = req.body;
+    console.log(req.body);
 
     try {
         const mysqlConnection = await connectMySQL();
-        await mysqlConnection.execute('CALL updateEvent(?, ?, ?, ?, ?, ?)', [id, name, date_debut, date_fin, lieu, personnes_max]);
+        await mysqlConnection.execute('CALL updateEventDates(?, ?, ?)', [id, date_debut, date_fin]);
         await mysqlConnection.end();
 
-        res.redirect('/'); // Redirige vers la page d'accueil ou celle souhaitée après mise à jour
+        res.redirect('/api/events'); // Redirige vers la page d'accueil ou celle souhaitée après mise à jour
     } catch (err) {
         res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'événement', error: err.message });
     }
 };
 
-module.exports = { getEvents, renderEditEvent, updateEvent };
+const deleteEvent = async (req, res) => {
+    const eventID = req.params.id;
+
+    try {
+        const mysqlConnection = await connectMySQL();
+        await mysqlConnection.execute('CALL deleteEvent(?)', [eventID]);
+        await mysqlConnection.end(); 
+
+        res.status(204).send();
+    } catch (err) {
+        console.error('Erreur lors de la suppression de l\'événement :', err);
+        res.status(500).json({ message: 'Erreur lors de la suppression de l\'événement', error: err.message });
+    }
+}
+
+module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent };
