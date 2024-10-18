@@ -18,7 +18,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
    git clone https://github.com/votre-utilisateur/event.git
    ```
    ```bash
-   cd nom-du-projet
+   cd event
    ```
 2. **Installer les dépendances** :
 
