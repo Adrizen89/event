@@ -39,27 +39,34 @@
             </div>
         </form>
         <% if (event.participants && event.participants.length > 0) { %>
-            <ul class="list-disc list-inside">
+            <ul class="list-disc list-inside bg-gray-100 p-4 rounded-lg">
                 <% event.participants.forEach(participant => { %>
-                    <li>
-                        <%= participant.firstName %> <%= participant.lastName %>
-                        <button onclick="deleteParticipant('<%= participant.firstName %>', '<%= participant.lastName %>', '<%= event.id %>')" class="text-red-500 hover:underline">Supprimer</button>
+                    <li class="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
+                        <span class="text-gray-700 font-semibold">
+                            <%= participant.firstName %> <%= participant.lastName %>
+                        </span>
+                        <button onclick="deleteParticipant('<%= participant.firstName %>', '<%= participant.lastName %>', '<%= event.id %>')"
+                                class="text-red-500 hover:text-red-700 font-medium focus:outline-none">
+                            Supprimer
+                        </button>
                     </li>
                 <% }) %>
             </ul>
         <% } else { %>
-            <p>Aucun participant inscrit pour cet événement.</p>
+            <p class="text-gray-500 italic">Aucun participant inscrit pour cet événement.</p>
         <% } %>
-
-        <button onclick="toggleParticipantForm()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        
+        <button onclick="toggleParticipantForm()"
+                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 mt-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-green-400">
             Ajouter un participant
         </button>
+        
 
         <!-- Formulaire pour ajouter un participant -->
         <div id="participantForm" class="mt-4 hidden">
             <form id="addParticipantForm">
 
-                <input type="text" name="eventId" value="<%= event.id %>">
+                <input type="hidden" name="eventId" value="<%= event.id %>">
 
                 <div class="mb-4">
                     <label for="firstName" class="block text-gray-700 text-sm font-bold mb-2">Prénom</label>
@@ -71,10 +78,9 @@
                     <input type="text" name="lastName" id="lastName" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 
-                <div class="mb-4">
-                    <label for="dateInscription" class="block text-gray-700 text-sm font-bold mb-2">Date d'inscription</label>
-                    <input type="date" name="dateInscription" id="dateInscription" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
+
+                    <input type="hidden" name="dateInscription" id="dateInscription" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+
 
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Ajouter
