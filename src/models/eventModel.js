@@ -10,7 +10,10 @@ const EventSchema = mongoose.Schema({
         {
             firstName:String, 
             lastName:String,
-            dateJoined:Date
+            dateJoined:{
+                type: Date,
+                default: null
+            }
         }
     ]
 });

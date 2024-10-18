@@ -73,6 +73,48 @@ const deleteEvent = async (req, res) => {
     }
 }
 
+
+
+const addParticipant = async (req, res) => {
+    const { eventId, firstName, lastName } = req.body;
+    const dateInscription = new Date().toISOString().split('T')[0];
+    console.log('ID de l\'événement transmis :', eventId);
+
+    try {
+        const mysqlConnection = await connectMySQL();
+
+        // Appel de la procédure
+        await mysqlConnection.execute('CALL insertInscription(?, ?, ?, ?)', [
+            firstName, 
+            lastName, 
+            eventId, 
+            dateInscription
+        ]);
+
+        await mysqlConnection.end();
+        res.status(200).json({ message: 'Participant ajouté avec succès.' });
+    } catch (error) {
+        if (error.sqlState === '45000') {
+            if (error.sqlMessage.includes('événement non trouvé')) {
+
+                console.error('Erreur : événement non trouvé');
+                res.status(400).json({ status: 'error', message: 'Événement non trouvé' });
+            } else if (error.sqlMessage.includes('nombre maximum de participants est atteint')) {
+
+                console.error('Erreur : Le nombre maximum de participants est atteint');
+                res.status(400).json({ status: 'error', message: 'Nombre maximum de participants atteint' });
+            }
+        } else {
+
+            console.error('Erreur inattendue:', error);
+            res.status(500).json({ status: 'error', message: 'Erreur interne du serveur' });
+        }
+    }
+};
+
+
+
+
 const deleteParticipant = async (req, res) => {
     const { firstName, lastName } = req.body;
     const eventId = req.params.id;
@@ -90,6 +132,7 @@ const deleteParticipant = async (req, res) => {
 }
 const createEvent = async (req, res) => {
     const { name, date_debut, date_fin, personnes_max, lieu } = req.body;
+
 
     try {
         const mysqlConnection = await connectMySQL();
@@ -112,4 +155,5 @@ const createEvent = async (req, res) => {
 
 
 
-module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent, deleteParticipant, createEvent };
+module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent, addParticipant, deleteParticipant, createEvent };
+

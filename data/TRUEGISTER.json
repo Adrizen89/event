@@ -1,17 +1,23 @@
 {
-    "results": [
-    {
-    "event": {
-    "event_name": "Mon event",
-    "event_begin": "2024-10-05 16:00:00",
-    "event_finish": "2024-10-05 20:00:00",
-    "event_where": "1 rue truc - 75010 Machin"
-    },
-    "attendees": [
-    { "attendee_1": "John", "attendee_2": "Doe" },
-    { "attendee_1": "Jane", "attendee_2": "Dae" },
-    { "attendee_1": "Jerry", "attendee_2": "Due" }
+    "results" : [
+        {
+            "event": {
+                "event_name": "Rencontre Entrepreneurs",
+                "event_begin": "2024-11-30 08:30:00",
+                "event_finish": "2024-11-30 11:30:00",
+                "event_where": "18 avenue Montaigne - 75008 Paris"
+            },
+            "attendees": [
+                { "attendee_1": "Nathan", "attendee_2": "Fontaine" },
+                { "attendee_1": "Clara", "attendee_2": "Boucher" },
+                { "attendee_1": "Julien", "attendee_2": "Carpe" },
+                { "attendee_1": "Nathan", "attendee_2": "Fontaine" },
+                { "attendee_1": "Clara", "attendee_2": "Boucher" },
+                { "attendee_1": "Julien", "attendee_2": "Carpe" },
+                { "attendee_1": "Nathan", "attendee_2": "Fontaine" },
+                { "attendee_1": "Clara", "attendee_2": "Boucher" },
+                { "attendee_1": "Julien", "attendee_2": "Carpe" }
+            ]
+        }
     ]
-    }
-    ]
-    }
+}
