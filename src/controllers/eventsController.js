@@ -155,5 +155,5 @@ const createEvent = async (req, res) => {
 
 
 
-module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent, deleteParticipant, createEvent };
+module.exports = { getEvents, renderEditEvent, updateEvent, deleteEvent, addParticipant, deleteParticipant, createEvent };
 

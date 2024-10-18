@@ -1,14 +1,26 @@
 
-    {
-        "e_name": "AD",
-        "e_start": "2024-10-05 16:00:00",
-        "e_finish": "2024-10-05 20:00:00",
-        "e_location": "1 rue machin - 75010 Paris",
-        "e_attendees_max": 10,
-        "attendees": [
-            ["Adrien", "BRR", "2023-03-12"],
-            ["Enzo", "alves", "2023-03-12"],
-            ["nath", "soul", "2023-04-15"],
-            ["theo", "gtr", "2023-04-15"]
-        ]
-    }
+{
+    "e_name": "Networking Paris",
+    "e_start": "2024-11-15 09:00:00",
+    "e_finish": "2024-11-15 12:00:00",
+    "e_location": "45 avenue des Champs-Élysées - 75008 Paris",
+    "e_attendees_max": 20,
+    "attendees": [
+        ["Marie", "Dupont", "2024-10-01"],
+        ["Julien", "Martin", "2024-10-02"],
+        ["Clara", "Moreau", "2024-10-03"],
+        ["Lucas", "Leroy", "2024-10-04"],
+        ["Emma", "Petit", "2024-10-05"],
+        ["Paul", "Durand", "2024-10-06"],
+        ["Chloé", "Dumas", "2024-10-07"],
+        ["Antoine", "Faure", "2024-10-08"],
+        ["Léa", "Bernard", "2024-10-09"],
+        ["Sophie", "Blanc", "2024-10-10"],
+        ["Maxime", "Roux", "2024-10-11"],
+        ["Alice", "Perrin", "2024-10-12"],
+        ["Thomas", "Dufour", "2024-10-13"],
+        ["Zoé", "Renard", "2024-10-14"],
+        ["Hugo", "Girard", "2024-10-15"]
+        
+    ]
+}

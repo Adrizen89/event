@@ -13,14 +13,16 @@ const insertEvent = async (name, date_creation, date_start, date_finish, max_att
 const insertInscription = async (firstName, lastName, date_inscription, linkedEventID) => {
     const connection = await connectMySQL();
     
-    // Remplacer les valeurs `undefined` par des valeurs par défaut ou `null`
+
     firstName = firstName || 'Prénom inconnu';
     lastName = lastName || 'Nom inconnu';
-    date_inscription = date_inscription || new Date(); // Utilise la date actuelle si `undefined`
-    linkedEventID = linkedEventID || null; // S'assurer que l'ID est défini, sinon `null`
+    date_inscription = date_inscription || new Date().toISOString().split('T')[0];
+    linkedEventID = linkedEventID || null; 
+
+    console.log(linkedEventID);
 
     await connection.execute('CALL insertInscription(?, ?, ?, ?)', 
-        [firstName, lastName, date_inscription, linkedEventID]);
+        [firstName, lastName, linkedEventID, date_inscription]);
 
     await connection.end();
 };

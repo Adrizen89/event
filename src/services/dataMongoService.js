@@ -24,7 +24,7 @@ function adaptData(data) {
         }));
         console.log('cas 1')
     } 
-    // Cas 2 avec "fn", "ln" et "when"
+    // Cas 2 avec "fn", "ln" et "when" LIVETICKET
     else if (data.attendees && Array.isArray(data.attendees) && data.attendees[0].fn) {
         attendees = data.attendees.map(att => ({
             firstName: att.fn || "Unknown",
