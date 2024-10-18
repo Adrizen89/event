@@ -15,7 +15,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 1. **Cloner le dépôt** :
    ```bash
-   git clone https://github.com/votre-utilisateur/event.git
+   git clone https://github.com/Adrizen89/event.git
    ```
    ```bash
    cd event
